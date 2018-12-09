@@ -53,11 +53,8 @@ def eventHandler(evt) {
   
   def now = new Date()
   def nowFormatted = now.format("EEE, MMM d hh:mm:ss a '('zzz')'",TimeZone.getTimeZone('America/New_York'))
-  log.trace("sending SMS at ${now.getTime()}")
-  log.info("formatted date $nowFormatted")
-  log.info("contact device: ${evt.displayName}")
-  log.info("contact value: ${evt.value.toUpperCase()}")
-  //sendSms(phone1, "${nowFormatted} \n${evt.displayName} changed to \n${evt.value.toUpperCase()}")
+  log.info("sending SMS at $nowFormatted")
+  sendSms(phone1, "${nowFormatted} \n${evt.displayName} changed to \n${evt.value.toUpperCase()}")
   if (phone2 != "") {
 	sendSms(phone2, "${nowFormatted} \n${evt.displayName} changed to \n${evt.value.toUpperCase()}")
   }
