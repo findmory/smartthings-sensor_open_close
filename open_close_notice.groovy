@@ -37,23 +37,20 @@ def updated()
 }
 
 def eventHandler(evt) { 
-  // handle null
-  if (!atomicState.lastExecution) {
-  	atomicState.lastExecution = 0
-  }
-  
-  // if we have just handled this same event within 500ms ignore it
-  if (now() - atomicState.lastExecution <= 500) {
-  	log.trace('too soon so skipping')
+  // if the evt.value is a repeat ignore
+  if (evt.value == atomicState.lastExecution) {
+  	log.trace('repeat so skipping')
   	return
   }
   
-  // update state for the time we are handling the event
-  atomicState.lastExecution = now()
+  // update state with value ('open' / 'close') for latest event 
+  atomicState.lastExecution = evt.value
   
   def now = new Date()
   def nowFormatted = now.format("EEE, MMM d hh:mm:ss a '('zzz')'",TimeZone.getTimeZone('America/New_York'))
-  log.info("sending SMS at $nowFormatted")
+  log.info("sending SMS at ${nowFormatted}")
+  log.info("contact device: ${evt.displayName}")
+  log.info("contact value: ${evt.value.toUpperCase()}")
   sendSms(phone1, "${nowFormatted} \n${evt.displayName} changed to \n${evt.value.toUpperCase()}")
   if (phone2 != "") {
 	sendSms(phone2, "${nowFormatted} \n${evt.displayName} changed to \n${evt.value.toUpperCase()}")
@@ -61,10 +58,3 @@ def eventHandler(evt) {
 
 }
 
-
-
-/*
-ADT Pulse Alert: MICHAEL D ORY Home
-10/17 9:34 PM
-FRONT DOOR (Zone 1) changed to Closed.
-*/
