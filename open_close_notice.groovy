@@ -47,13 +47,13 @@ def eventHandler(evt) {
   atomicState.lastExecution = evt.value
   
   def now = new Date()
-  def nowFormatted = now.format("EEE, MMM d hh:mm:ss a '('zzz')'",TimeZone.getTimeZone('America/New_York'))
+  def nowFormatted = now.format("EEE, MMM d hh:mm:ss a",TimeZone.getTimeZone('America/New_York'))
   log.info("sending SMS at ${nowFormatted}")
   log.info("contact device: ${evt.displayName}")
   log.info("contact value: ${evt.value.toUpperCase()}")
-  sendSms(phone1, "${nowFormatted} \n${evt.displayName} changed to \n${evt.value.toUpperCase()}")
+  sendSms(phone1, "${nowFormatted} \n${evt.displayName} ${evt.value.toUpperCase()}")
   if (phone2 != "") {
-	sendSms(phone2, "${nowFormatted} \n${evt.displayName} changed to \n${evt.value.toUpperCase()}")
+	sendSms(phone2, "${nowFormatted} \n${evt.displayName} ${evt.value.toUpperCase()}")
   }
 
 }
