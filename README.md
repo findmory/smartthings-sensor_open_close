@@ -18,7 +18,7 @@ CLOSED
 ## Notes
 When working with the EcoLink Z-Wave plus sensors I noticed that they consistantly send TWO events each time they are opened or closed.
 
-Because of this, if you use most SmartApps to send notifications of events you will get duplicates.  To work around this I am writing to [atomic state](https://docs.smartthings.com/en/latest/smartapp-developers-guide/state.html#state-and-atomic-state-overview) with a value of the last timestamp of an update.  Then I check if it's been at least 500ms since the last event was handled.  If so, I handle the event.
+Because of this, if you use most SmartApps to send notifications of events you will get duplicates.  To work around this I am writing to [atomic state](https://docs.smartthings.com/en/latest/smartapp-developers-guide/state.html#state-and-atomic-state-overview) with the value of the last event type ('open', 'closed').  Then I check if the current event I am handling is DIFFERENT than the last event type.  If so, I handle the event.  (No need to handle back to back 'open' or 'closed' - that use case makes no sense).
 
 
 ### Todo
