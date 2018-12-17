@@ -47,7 +47,7 @@ def eventHandler(evt) {
   atomicState.lastExecution = evt.value
   
   def now = new Date()
-  def nowFormatted = now.format("EEE, MMM d hh:mm:ss a",TimeZone.getTimeZone('America/New_York'))
+  def nowFormatted = now.format("EEE, MMM d h:mm:ss a",TimeZone.getTimeZone('America/New_York'))
   log.info("sending SMS at ${nowFormatted}")
   log.info("contact device: ${evt.displayName}")
   log.info("contact value: ${evt.value.toUpperCase()}")
