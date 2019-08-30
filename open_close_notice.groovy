@@ -37,24 +37,34 @@ def updated()
 }
 
 def eventHandler(evt) { 
-  // if the evt.value is a repeat ignore
-  if (evt.value == atomicState.lastExecution) {
+ 
+  // log.trace("atomicState:  ${atomicState.lastExecution}")
+  // log.trace("atomicDevice: ${atomicState.lastDevice}")
+  // log.trace("evt:  ${evt.value}")
+  // log.trace("device: ${evt.displayName}")
+  
+  // if the evt.value is a repeat FOR THE SAME device - ignore
+  if (evt.value == atomicState.lastExecution && evt.displayName == atomicState.lastDevice) {
   	log.trace('repeat so skipping')
   	return
+  } else {
+  	// update state with value ('open' / 'close') for latest event 
+    atomicState.lastExecution = evt.value
+    atomicState.lastDevice = evt.displayName
   }
-  
-  // update state with value ('open' / 'close') for latest event 
-  atomicState.lastExecution = evt.value
+
   
   def now = new Date()
   def nowFormatted = now.format("EEE, MMM d h:mm:ss a",TimeZone.getTimeZone('America/New_York'))
-  log.info("sending SMS at ${nowFormatted}")
-  log.info("contact device: ${evt.displayName}")
-  log.info("contact value: ${evt.value.toUpperCase()}")
+  // log.info("sending SMS at ${nowFormatted}")
+  // log.info("contact device: ${evt.displayName}")
+  // log.info("contact value: ${evt.value.toUpperCase()}")
+  
   sendSms(phone1, "${nowFormatted} \n${evt.displayName} ${evt.value.toUpperCase()}")
   if (phone2 != "") {
 	sendSms(phone2, "${nowFormatted} \n${evt.displayName} ${evt.value.toUpperCase()}")
   }
+  
 
 }
 
